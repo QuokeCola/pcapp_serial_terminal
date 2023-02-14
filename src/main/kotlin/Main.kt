@@ -2,7 +2,6 @@ import com.formdev.flatlaf.FlatDarkLaf
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
-import java.awt.MenuBar
 import java.awt.event.KeyEvent
 import java.lang.Boolean
 import javax.swing.*
@@ -10,14 +9,15 @@ import kotlin.Array
 import kotlin.String
 
 class MasterPane : JPanel(GridLayout(1, 1)) {
+    val serial_interface = SerialInterface()
     init {
+        print(serial_interface.get_ports())
         val tabbedPane = JTabbedPane()
         val icon = createImageIcon("")
-        val terminal_panel = TerminalPanel()
-        terminal_panel.preferredSize = Dimension(500,600);
+        TerminalPanelLayout().preferredSize = Dimension(500,600);
 
         tabbedPane.addTab(
-            "Terminal", icon, terminal_panel,
+            "Terminal", icon, TerminalPanelLayout(),
             "Input commands and check feedback."
         )
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1)

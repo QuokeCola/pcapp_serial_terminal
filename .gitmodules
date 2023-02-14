@@ -1,0 +1,3 @@
+[submodule "src/SerialPundit"]
+	path = src/SerialPundit
+	url = https://github.com/RishiGupta12/SerialPundit

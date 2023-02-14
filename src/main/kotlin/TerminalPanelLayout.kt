@@ -2,11 +2,9 @@
 
 import java.awt.Dimension
 import java.awt.FlowLayout
-import java.io.Serial
 import javax.swing.*
 
-class TerminalPanel  : JPanel() {
-
+class TerminalPanelLayout  : JPanel() {
     private val clear_button    = JButton("clear output")
     private val send_button    = JButton("send")
     private val terminal_disp = JTextPane()
@@ -14,13 +12,13 @@ class TerminalPanel  : JPanel() {
     private val terminal_input  = JTextField()
     private val macro_panel  = JPanel()
 
+    // Test buttons, will auto gen within serial commands.
     private val hello_button = JButton("hello")
     private val stats_button = JButton("status")
     private val memory_button = JButton("memory")
     private val systime_buttton = JButton("runtime")
     private val threads_button = JButton("threads")
-    private val threads_button1 = JButton("threads")
-    private val threads_button2 = JButton("threads")
+    private var macro_buttons = mutableListOf<JButton>(hello_button, stats_button, memory_button, systime_buttton, threads_button)
 
     private val BORDER_WIDTH = 20
     private val GAP_WIDTH = 20
@@ -38,19 +36,18 @@ class TerminalPanel  : JPanel() {
             BorderFactory.createTitledBorder("macros"),
             BorderFactory.createEmptyBorder(5, 5, 5, 5)
         )
-        macro_panel.add(hello_button)
-        macro_panel.add(stats_button)
-        macro_panel.add(memory_button)
-        macro_panel.add(systime_buttton)
-        macro_panel.add(threads_button)
-        macro_panel.add(threads_button1)
-        macro_panel.add(threads_button2)
+
+        for (macro_button in macro_buttons) {
+            macro_panel.add(macro_button)
+        }
 
         macro_panel.layout = FlowLayout(FlowLayout.LEFT)
         this.add(terminal_screen)
         this.add(terminal_input)
         this.add(send_button)
         this.add(macro_panel)
+
+        // Any way to add the constraint in program way?
 
         layout.putConstraint(SpringLayout.EAST, clear_button,
             -BORDER_WIDTH,

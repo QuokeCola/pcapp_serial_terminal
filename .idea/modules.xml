@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/chibios-terminal.iml" filepath="$PROJECT_DIR$/chibios-terminal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/serial-terminal.iml" filepath="$PROJECT_DIR$/serial-terminal.iml" />
     </modules>
   </component>
 </project>
