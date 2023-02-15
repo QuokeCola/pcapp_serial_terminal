@@ -9,9 +9,18 @@ import kotlin.Array
 import kotlin.String
 
 class MasterPane : JPanel(GridLayout(1, 1)) {
-    val serial_interface = SerialInterface()
     init {
-        print(serial_interface.get_ports())
+        // TODO: remove UT.
+        val ports = SerialInterface()._ports;
+        for (port in ports) {
+            print(port.systemPortName)
+            print(port.baudRate)
+        }
+        val sif = SerialInterface()
+        sif.set_port(ports[0])
+        sif.start_receive()
+        // TODO: end of UT
+
         val tabbedPane = JTabbedPane()
         val icon = createImageIcon("")
         TerminalPanelLayout().preferredSize = Dimension(500,600);
@@ -26,15 +35,6 @@ class MasterPane : JPanel(GridLayout(1, 1)) {
         add(tabbedPane)
         //The following line enables to use scrolling tabs.
         tabbedPane.tabLayoutPolicy = JTabbedPane.SCROLL_TAB_LAYOUT
-    }
-
-    protected fun makeTextPanel(text: String?): JComponent {
-        val panel = JPanel(false)
-        val filler = JLabel(text)
-        filler.horizontalAlignment = JLabel.CENTER
-        panel.layout = GridLayout(1, 1)
-        panel.add(filler)
-        return panel
     }
 
     companion object {
@@ -79,3 +79,4 @@ class MasterPane : JPanel(GridLayout(1, 1)) {
         }
     }
 }
+
