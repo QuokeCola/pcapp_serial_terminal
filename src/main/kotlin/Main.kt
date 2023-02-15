@@ -19,7 +19,6 @@ class MasterPane : JPanel(GridLayout(1, 1)) {
         val sif = SerialInterface()
         sif.set_port(ports[0])
         sif.start_receive()
-        // TODO: end of UT
 
         val tabbedPane = JTabbedPane()
         val icon = createImageIcon("")

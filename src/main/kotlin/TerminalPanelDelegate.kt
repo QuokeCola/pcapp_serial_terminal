@@ -5,7 +5,7 @@ class TerminalPanelDelegate {
     }
 
     fun reset_UI() {
-        SerialInterface.send("")
+        SerialInterface.send("help","\r\n")
     }
 
 

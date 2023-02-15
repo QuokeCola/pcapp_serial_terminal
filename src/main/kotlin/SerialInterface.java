@@ -2,6 +2,7 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortEvent;
 import com.fazecast.jSerialComm.SerialPortMessageListener;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +12,7 @@ public class SerialInterface implements SerialPortMessageListener{
     private static final int RX_LINE_SIZE    = 1000;   // Maximum number of lines could store.
     private static final int BUFFER_STR_SIZE = 200;    // Maximum number of chars each line could store.
     private static SerialPort port           = null;   // The serial port
-    public static String delimiter = "\r\n";
+    public static String delimiter = "\n";
 
     public static List<String> rx_lines = new ArrayList<String>();
 
@@ -44,10 +45,9 @@ public class SerialInterface implements SerialPortMessageListener{
         port.addDataListener(this);
     }
 
-    static void send(String string) {
-        byte[] out = (string + "\r\n").getBytes();
-        System.out.print(Arrays.toString(out));
-        port.writeBytes(out, out.length);
+    static void send(String string, String delimiter) throws IOException {
+        byte[] out = (string + delimiter).getBytes();
+        port.getOutputStream().write(out);
     }
 
     @Override
@@ -69,6 +69,9 @@ public class SerialInterface implements SerialPortMessageListener{
     public void serialEvent(SerialPortEvent event) {
         byte[] rx_byte = event.getReceivedData();
         String rx_str  = new String(rx_byte, StandardCharsets.ISO_8859_1);
-        rx_lines.add(rx_str);
+        rx_str = rx_str.strip();
+        if (!rx_str.equals("")) {
+            rx_lines.add(rx_str.strip());
+        }
     }
 }
