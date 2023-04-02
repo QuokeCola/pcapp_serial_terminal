@@ -1,4 +1,4 @@
-import kotlin.jvm.internal.markers.KMutableList;
+import de.schipplock.gui.swing.svgicon.SvgIconManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +14,16 @@ public class PortSelectButtonLayout {
         menu_bar.setRollover(false);
 
         menu_bar.setLayout(menu_bar_layout);
-        connect_button.setText("connect");
+        var icon_dim = new Dimension(18,18);
+        var icon = SvgIconManager.getIcon("images/connect.svg",icon_dim);
+        connect_button.setIcon(icon);
+        connect_button.setSize(icon_dim);
         menu_bar.add(port_combo_box);
         menu_bar.add(connect_button);
     }
     public static final JToolBar menu_bar = new JToolBar();
     public static final JComboBox<String> port_combo_box = new JComboBox<String>();
-    public static final JButton connect_button = new JButton("connect");
+    public static final JButton connect_button = new JButton();
 
     static void update_port_combo_box(List<String> port_names) {
         port_combo_box.removeAllItems();
