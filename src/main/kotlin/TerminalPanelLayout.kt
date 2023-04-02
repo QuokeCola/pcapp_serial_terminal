@@ -6,11 +6,11 @@ import javax.swing.*
 
 class TerminalPanelLayout  : JPanel() {
     private val clear_button    = JButton("clear output")
-    private val send_button    = JButton("send")
-    private val terminal_disp = JTextPane()
+    private val send_button     = JButton("send")
+    private val terminal_disp   = JTextPane()
     private val terminal_screen = JScrollPane(terminal_disp)
     private val terminal_input  = JTextField()
-    private val macro_panel  = JPanel()
+    private val macro_panel     = JPanel()
 
     // Test buttons, will auto gen within serial commands.
     private val hello_button = JButton("hello")
