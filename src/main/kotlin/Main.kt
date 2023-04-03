@@ -19,7 +19,6 @@ fun createAndShowGUI(): JFrame {
 }
 fun main() {
     System.setProperty( "apple.awt.application.appearance", "NSAppearanceNameDarkAqua" )
-    print( System.getProperty("apple.awt.application.appearance"))
     FlatDarkLaf.setup()
     //Schedule a job for the event dispatch thread:
     //creating and showing this application's GUI.
@@ -29,7 +28,7 @@ fun main() {
         val frame = createAndShowGUI()
 
         val master = MasterPane()
-        if( SystemInfo.isMacFullWindowContentSupported ) {
+        if( SystemInfo.isMacOS ) {
             frame.getRootPane().putClientProperty( "apple.awt.fullWindowContent", true )
             frame.getRootPane().putClientProperty( "apple.awt.transparentTitleBar", true )
             frame.add(Box.createVerticalStrut(30),BorderLayout.PAGE_START)
