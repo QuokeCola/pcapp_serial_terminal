@@ -15,7 +15,7 @@ public class PortSelectButtonLayout {
 
         menu_bar.setLayout(menu_bar_layout);
         var icon_dim = new Dimension(18,18);
-        var icon = SvgIconManager.getIcon("images/connect.svg",icon_dim);
+        var icon = SvgIconManager.getIcon("icons/connect.svg",icon_dim);
         connect_button.setIcon(icon);
         connect_button.setSize(icon_dim);
         menu_bar.add(port_combo_box);
