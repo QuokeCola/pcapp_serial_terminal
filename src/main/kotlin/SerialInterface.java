@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SerialInterface implements SerialPortMessageListener{
+public class SerialInterface extends Thread implements SerialPortMessageListener{
     private static final int RX_LINE_SIZE    = 1000;   // Maximum number of lines could store.
     private static final int BUFFER_STR_SIZE = 200;    // Maximum number of chars each line could store.
     private static SerialPort port           = null;   // The serial port
@@ -17,6 +17,7 @@ public class SerialInterface implements SerialPortMessageListener{
 
     SerialInterface() {
         System.setProperty("fazecast.jSerialComm.appid", "QuokeCola.Serial-Terminal");
+        this.start();
     }
 
     /**
@@ -72,5 +73,19 @@ public class SerialInterface implements SerialPortMessageListener{
         if (!rx_str.equals("")) {
             rx_lines.add(rx_str.strip());
         }
+    }
+
+    public void usbDeviceAttached() {
+        System.out.println("Attached");
+        PortSelectButtonDelegate.update_serial_port();
+    }
+
+    public void usbDeviceDetached() {
+        PortSelectButtonDelegate.update_serial_port();
+    }
+
+    public void run()
+    {
+        this.get_ports();
     }
 }
