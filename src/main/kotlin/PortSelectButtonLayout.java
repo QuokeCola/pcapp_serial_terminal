@@ -24,11 +24,4 @@ public class PortSelectButtonLayout {
     public static final JToolBar menu_bar = new JToolBar();
     public static final JComboBox<String> port_combo_box = new JComboBox<String>();
     public static final JButton connect_button = new JButton();
-
-    static void update_port_combo_box(List<String> port_names) {
-        port_combo_box.removeAllItems();
-        for (String port_name : port_names) {
-            port_combo_box.addItem(port_name);
-        }
-    }
 }

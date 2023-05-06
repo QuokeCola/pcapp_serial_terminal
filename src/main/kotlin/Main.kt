@@ -22,7 +22,8 @@ fun main() {
     FlatDarkLaf.setup()
     //Schedule a job for the event dispatch thread:
     //creating and showing this application's GUI.
-
+    //Start serial receiving thread.
+    SerialInterface()
     SwingUtilities.invokeLater { //Turn off metal's use of bold fonts
         UIManager.put("swing.boldMetal", false)
         val frame = createAndShowGUI()

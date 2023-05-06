@@ -8,7 +8,6 @@ import kotlin.String
 class MasterPane : JPanel(BorderLayout()) {
     init {
         PortSelectButtonDelegate()
-        PortSelectButtonDelegate.update_serial_port()
         add(PortSelectButtonDelegate.menu_bar, BorderLayout.PAGE_START)
 
         val tabbedPane = JTabbedPane()
@@ -19,7 +18,6 @@ class MasterPane : JPanel(BorderLayout()) {
             "Input commands and check feedback."
         )
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1)
-
         //Add the tabbed pane to this panel.
         add(tabbedPane)
         //The following line enables to use scrolling tabs.

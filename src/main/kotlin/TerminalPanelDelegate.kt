@@ -8,6 +8,4 @@ class TerminalPanelDelegate {
         SerialInterface.send("help","\r\n")
     }
 
-
-
 }
