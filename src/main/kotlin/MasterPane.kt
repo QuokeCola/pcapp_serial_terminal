@@ -12,9 +12,10 @@ class MasterPane : JPanel(BorderLayout()) {
 
         val tabbedPane = JTabbedPane()
         val icon = createImageIcon("")
-        TerminalPanelLayout().preferredSize = Dimension(500,600);
+        TerminalDelegate()
+        TerminalDelegate.main_panel.preferredSize = Dimension(500,600);
         tabbedPane.addTab(
-            "Terminal", icon, TerminalPanelLayout(),
+            "Terminal", icon, TerminalLayout.main_panel,
             "Input commands and check feedback."
         )
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1)

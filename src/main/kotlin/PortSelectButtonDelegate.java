@@ -1,19 +1,26 @@
 import com.fazecast.jSerialComm.SerialPort;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PortSelectButtonDelegate extends PortSelectButtonLayout {
     PortSelectButtonDelegate(){
         var delegate_thread = new DelegateThread();
         delegate_thread.start();
+        port_combo_box.addActionListener(port_select_btn_listener);
+        connect_button.addActionListener(connect_btn_listener);
     }
 
     private static final int THREAD_INTERVAL = 200; // ms
     private static class DelegateThread extends Thread {
         SerialPort[] prev_ports = new SerialInterface().get_ports();
+
         @Override
         public void run() {
+            port_combo_box.removeAllItems();
+            for (SerialPort port: prev_ports) {
+                port_combo_box.addItem(port.getDescriptivePortName());
+            }
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     SerialPort[] ports = new SerialInterface().get_ports();
@@ -41,8 +48,41 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
         }
     }
 
-    static void connect_btn_clk(){
-        int port_idx = port_combo_box.getSelectedIndex();
-        new SerialInterface().set_port(new SerialInterface().get_ports()[port_idx]);
-    }
+    private static boolean opening_port_selected = false;
+
+    ActionListener connect_btn_listener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int port_idx = port_combo_box.getSelectedIndex();
+            if (port_idx== -1) {
+                return;
+            }
+            SerialInterface SRIF = new SerialInterface();
+            opening_port_selected = SRIF.get_ports()[port_idx].getDescriptivePortName().equals(SRIF.port_name());
+            if (SRIF.is_opened()) {
+                SRIF.stop_receive();
+                set_connect_btn_icon(true);
+            } else if(opening_port_selected) {
+                SRIF.open_port(SRIF.get_ports()[port_idx]);
+                set_connect_btn_icon(false);
+            }
+            if (!opening_port_selected) {
+                SRIF.open_port(SRIF.get_ports()[port_idx]);
+                set_connect_btn_icon(false);
+            }
+        }
+    };
+
+    ActionListener port_select_btn_listener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int port_idx = port_combo_box.getSelectedIndex();
+            if (port_idx == -1) {
+                return;
+            }
+            SerialInterface SRIF = new SerialInterface();
+            opening_port_selected = SRIF.get_ports()[port_idx].getDescriptivePortName().equals(SRIF.port_name());
+            set_connect_btn_icon(!opening_port_selected);
+        }
+    };
 }

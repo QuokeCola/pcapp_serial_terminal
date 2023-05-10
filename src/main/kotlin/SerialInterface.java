@@ -8,13 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SerialInterface implements SerialPortMessageListener{
-    private static final int RX_LINE_SIZE    = 1000;   // Maximum number of lines could store.
-    private static final int BUFFER_STR_SIZE = 200;    // Maximum number of chars each line could store.
     private static SerialPort port           = null;   // The serial port
     public static List<serial_callback> callbacks = new ArrayList<>();
-    public static String delimiter = "\n";
+    public static String delimiter = "\r\n";
 
-    public static List<String> rx_lines = new ArrayList<String>();
+    private static boolean is_opened = false;
+
+    public boolean is_opened() {
+        return is_opened;
+    }
+
+    /**
+     * @return Get current port's descriptive port name.
+     */
+    public String port_name() {
+        try{
+            return port.getDescriptivePortName();
+        } catch (Exception ignored) {};
+        return null;
+    }
 
     SerialInterface() {
         System.setProperty("fazecast.jSerialComm.appid", "QuokeCola.Serial-Terminal");
@@ -28,21 +40,32 @@ public class SerialInterface implements SerialPortMessageListener{
     }
 
     /**
-     * Set the serial port for this serial interface
+     * Set the serial port for this serial interface and open it.
      * @param port_ Available port that obtained from <SerialInterface.get_ports()> method
      */
-    void set_port(SerialPort port_) {
+    void open_port(SerialPort port_) {
+        try{ // if port is not null.
+            stop_receive();
+        } catch (Exception ignored) { // Initially, port is not set yet so there will be a null error
+        }
+        // Set port.
         port = port_;
-    }
-
-    /**
-     * Start the data receive thread.
-     */
-    void start_receive() {
         port.allowElevatedPermissionsRequest();
         port.openPort();
         port.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING, 1000, 0);
         port.addDataListener(this);
+        is_opened = true;
+    }
+
+    /**
+     * Stop receiving data.
+     */
+    void stop_receive() {
+        if (port.isOpen()) {
+            port.closePort();
+            port.removeDataListener();
+        }
+        is_opened = false;
     }
 
     static void send(String string, String delimiter) throws IOException {
@@ -71,12 +94,11 @@ public class SerialInterface implements SerialPortMessageListener{
         String rx_str  = new String(rx_byte, StandardCharsets.ISO_8859_1);
         rx_str = rx_str.strip();
         if (!rx_str.equals("")) {
-            rx_lines.add(rx_str.strip());
             for (serial_callback callback:
                     callbacks) {
                 try {
                     callback.process_callback(rx_str.strip());
-                } catch (NoSuchMethodError ignored) {}
+                } catch (Exception ignored) {}
             }
         }
     }
