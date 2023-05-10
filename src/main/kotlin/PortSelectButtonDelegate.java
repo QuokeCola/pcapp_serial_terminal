@@ -82,7 +82,7 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
             }
             SerialInterface SRIF = new SerialInterface();
             opening_port_selected = SRIF.get_ports()[port_idx].getDescriptivePortName().equals(SRIF.port_name());
-            set_connect_btn_icon(!opening_port_selected);
+            set_connect_btn_icon(!opening_port_selected||!SRIF.is_opened());
         }
     };
 }
