@@ -7,14 +7,16 @@ import javax.swing.text.SimpleAttributeSet;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TerminalDelegate extends TerminalLayout{
     private static int TERMINAL_DISP_MAX_LINE = 200;
-    private static List<String> rx_buffer_str = new ArrayList<>();
+    private static final List<String> rx_buffer_str = new ArrayList<>();
     private static Document terminal_doc;
 
-    private static SimpleAttributeSet  keyWord = new SimpleAttributeSet();
+    private static final ArrayList<String> macros = new ArrayList<>(Arrays.asList("hello","stats","mem","systime","threads"));
+    private static final SimpleAttributeSet  keyWord = new SimpleAttributeSet();
     TerminalDelegate() {
         SerialInterface.callbacks.add(terminal_serial_callback);
         send_button.addActionListener(send_btns_listener);
@@ -22,6 +24,11 @@ public class TerminalDelegate extends TerminalLayout{
         terminal_doc = terminal_disp.getDocument();
         disp_length_spinner.setModel(new SpinnerNumberModel(TERMINAL_DISP_MAX_LINE, 1, 200, 1));
         disp_length_spinner.addChangeListener(disp_length_spinner_listener);
+        for (String macro: macros) {
+            var macro_btn = new JButton(macro);
+            macro_btn.addActionListener(send_btns_listener);
+            macro_panel.add(macro_btn);
+        }
     }
 
     private static final serial_callback terminal_serial_callback = new serial_callback() {

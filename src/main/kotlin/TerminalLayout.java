@@ -14,8 +14,7 @@ public class TerminalLayout {
     public static JTextPane terminal_disp     = new JTextPane();
     public static final JScrollPane terminal_screen = new JScrollPane(terminal_disp);
     public static final JTextField terminal_input   = new JTextField();
-    private static final JPanel macro_panel          = new JPanel();
-    private static final List<JButton> macro_buttons = new ArrayList<JButton>();
+    public static final JPanel macro_panel          = new JPanel();
     private static final int BORDER_WIDTH = 20;
     private static final int GAP_WIDTH = 20;
 
@@ -24,6 +23,7 @@ public class TerminalLayout {
         main_panel.add(clear_btn);
         terminal_disp.setEditable(false);
         terminal_disp.setAlignmentY(BOTTOM_ALIGNMENT);
+        terminal_disp.setFont(new Font("Jetbrains Mono", Font.PLAIN, 10));
         terminal_input.setSize(new Dimension(send_button.getSize()));
         macro_panel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("macros"),
