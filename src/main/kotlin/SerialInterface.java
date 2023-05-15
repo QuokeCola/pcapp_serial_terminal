@@ -39,6 +39,14 @@ public class SerialInterface implements SerialPortMessageListener{
         return SerialPort.getCommPorts();
     }
 
+    void set_port_baudrate(int baudrate) {
+        port.setBaudRate(baudrate);
+    }
+
+    int get_port_baudrate() {
+       return port.getBaudRate();
+    }
+
     /**
      * Set the serial port for this serial interface and open it.
      * @param port_ Available port that obtained from <SerialInterface.get_ports()> method

@@ -7,6 +7,7 @@ import kotlin.String
 
 class MasterPane : JPanel(BorderLayout()) {
     init {
+        System.setProperty("sun.java2d.opengl", "true")
         PortSelectButtonDelegate()
         add(PortSelectButtonDelegate.menu_bar, BorderLayout.PAGE_START)
 

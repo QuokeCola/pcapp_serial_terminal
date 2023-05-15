@@ -16,11 +16,14 @@ public class PortSelectButtonLayout {
         var icon_dim = new Dimension(18,18);
         connect_button.setSize(icon_dim);
         set_connect_btn_icon(true);
+        menu_bar.add(baudrate_combo_box);
         menu_bar.add(port_combo_box);
         menu_bar.add(connect_button);
     }
     public static final JToolBar menu_bar = new JToolBar();
     public static final JComboBox<String> port_combo_box = new JComboBox<String>();
+
+    public static final JComboBox<String> baudrate_combo_box = new JComboBox<>();
     public static final JButton connect_button = new JButton();
 
     /**

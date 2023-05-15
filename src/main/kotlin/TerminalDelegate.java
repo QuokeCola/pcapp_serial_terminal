@@ -35,11 +35,11 @@ public class TerminalDelegate extends TerminalLayout{
 
         @Override
         public void process_callback(String rx_string) throws BadLocationException {
-            while (rx_buffer_str.size() > TERMINAL_DISP_MAX_LINE) {
+            while (rx_buffer_str.size() >= TERMINAL_DISP_MAX_LINE) {
                 terminal_doc.remove(0,rx_buffer_str.get(0).length());
                 rx_buffer_str.remove(0);
             }
-            if (rx_buffer_str.size()<TERMINAL_DISP_MAX_LINE) { // scroll to bottom
+            if (rx_buffer_str.size()<TERMINAL_DISP_MAX_LINE-1) { // scroll to bottom
                 JScrollBar vertical = terminal_screen.getVerticalScrollBar();
                 vertical.setValue( vertical.getMaximum());
             }

@@ -1,7 +1,11 @@
 import com.fazecast.jSerialComm.SerialPort;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PortSelectButtonDelegate extends PortSelectButtonLayout {
     PortSelectButtonDelegate(){
@@ -9,8 +13,13 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
         delegate_thread.start();
         port_combo_box.addActionListener(port_select_btn_listener);
         connect_button.addActionListener(connect_btn_listener);
+        for (int baudrate_candidate: baudrate_candidates) {
+             baudrate_combo_box.addItem(Integer.toString(baudrate_candidate));
+        }
+        baudrate_combo_box.addActionListener(baudrate_select_btn_listener);
     }
 
+    private static final int[] baudrate_candidates = new int[]{110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 128000, 256000};
     private static final int THREAD_INTERVAL = 200; // ms
     private static class DelegateThread extends Thread {
         SerialPort[] prev_ports = new SerialInterface().get_ports();
@@ -64,10 +73,12 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
                 set_connect_btn_icon(true);
             } else if(opening_port_selected) {
                 SRIF.open_port(SRIF.get_ports()[port_idx]);
+                SRIF.set_port_baudrate(baudrate_candidates[baudrate_combo_box.getSelectedIndex()]);
                 set_connect_btn_icon(false);
             }
             if (!opening_port_selected) {
                 SRIF.open_port(SRIF.get_ports()[port_idx]);
+                SRIF.set_port_baudrate(baudrate_candidates[baudrate_combo_box.getSelectedIndex()]);
                 set_connect_btn_icon(false);
             }
         }
@@ -83,6 +94,24 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
             SerialInterface SRIF = new SerialInterface();
             opening_port_selected = SRIF.get_ports()[port_idx].getDescriptivePortName().equals(SRIF.port_name());
             set_connect_btn_icon(!opening_port_selected||!SRIF.is_opened());
+            int baudrate_idx = java.util.Arrays.binarySearch(baudrate_candidates, SRIF.get_ports()[port_idx].getBaudRate());
+            System.out.println(baudrate_idx);
+            if (baudrate_idx >= 0 && baudrate_idx < baudrate_candidates.length){
+                System.out.println("changed selected item");
+                baudrate_combo_box.setSelectedItem(baudrate_idx);
+                baudrate_combo_box.setSelectedIndex(baudrate_idx);
+            }
+        }
+    };
+
+    ActionListener baudrate_select_btn_listener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("set port baudrate");
+            SerialInterface SRIF = new SerialInterface();
+            if(SRIF.is_opened()) {
+                SRIF.set_port_baudrate(baudrate_candidates[baudrate_combo_box.getSelectedIndex()]);
+            }
         }
     };
 }
