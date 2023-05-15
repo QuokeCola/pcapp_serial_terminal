@@ -95,9 +95,7 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
             opening_port_selected = SRIF.get_ports()[port_idx].getDescriptivePortName().equals(SRIF.port_name());
             set_connect_btn_icon(!opening_port_selected||!SRIF.is_opened());
             int baudrate_idx = java.util.Arrays.binarySearch(baudrate_candidates, SRIF.get_ports()[port_idx].getBaudRate());
-            System.out.println(baudrate_idx);
             if (baudrate_idx >= 0 && baudrate_idx < baudrate_candidates.length){
-                System.out.println("changed selected item");
                 baudrate_combo_box.setSelectedItem(baudrate_idx);
                 baudrate_combo_box.setSelectedIndex(baudrate_idx);
             }
@@ -107,7 +105,6 @@ public class PortSelectButtonDelegate extends PortSelectButtonLayout {
     ActionListener baudrate_select_btn_listener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("set port baudrate");
             SerialInterface SRIF = new SerialInterface();
             if(SRIF.is_opened()) {
                 SRIF.set_port_baudrate(baudrate_candidates[baudrate_combo_box.getSelectedIndex()]);

@@ -35,6 +35,7 @@ public class TerminalDelegate extends TerminalLayout{
 
         @Override
         public void process_callback(String rx_string) throws BadLocationException {
+            // Dynamic FIFO for shell. FIFO length depends on TERMINAL_DISP_MAX_LINE
             while (rx_buffer_str.size() >= TERMINAL_DISP_MAX_LINE) {
                 terminal_doc.remove(0,rx_buffer_str.get(0).length());
                 rx_buffer_str.remove(0);
@@ -48,27 +49,34 @@ public class TerminalDelegate extends TerminalLayout{
         }
     };
 
+    /**
+     * Listener for send buttons (including macro buttons)
+     */
     ActionListener send_btns_listener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (e.getActionCommand().equals("send")) {
+                if (e.getActionCommand().equals("send")) { // If the clicked button is "send" button
                     SerialInterface.send(terminal_input.getText(), "\r\n");
-                } else {
+                } else { // If the clicked button is macro buttons
                     SerialInterface.send(e.getActionCommand(), "\r\n");
                 }
-
             } catch (Exception ignored) {}
         }
     };
 
+    /**
+     * Listener for shell display length spinner
+     */
     ChangeListener disp_length_spinner_listener = new ChangeListener() {
         @Override
         public void stateChanged(ChangeEvent e) {
             TERMINAL_DISP_MAX_LINE = Integer.parseInt(disp_length_spinner.getValue().toString());
         }
     };
-
+    /**
+     * Listener for clear button
+     */
     ActionListener clear_btn_listener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
