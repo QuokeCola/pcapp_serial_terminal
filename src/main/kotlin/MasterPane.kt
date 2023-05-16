@@ -21,11 +21,13 @@ class MasterPane : JPanel(BorderLayout()) {
             "Terminal", icon, TerminalLayout.main_panel,
             "Input commands and check feedback."
         )
+        PlotterLayout()
         tabbedPane.addTab(
             "Plotter", icon, PlotterLayout.main_panel,
             "Plotter"
         )
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1)
+        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2)
         //Add the tabbed pane to this panel.
         add(tabbedPane)
         //The following line enables to use scrolling tabs.

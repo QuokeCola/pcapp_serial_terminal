@@ -13,7 +13,7 @@ public class PlotterLayout{
     ArrayList<XYChart> charts = new ArrayList<XYChart>();
     PlotterLayout() throws InterruptedException, InvocationTargetException {
         XYChart chart = new XYChartBuilder().build();
-        chart.getStyler().setTheme(new plot_theme_dark());
+        chart.getStyler().setTheme(new PlotDarculaTheme());
         chart.getStyler();
         main_panel.add(new XChartPanel<>(chart));
     }
