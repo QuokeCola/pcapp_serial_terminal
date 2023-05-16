@@ -39,12 +39,12 @@ public class SerialInterface implements SerialPortMessageListener{
         return SerialPort.getCommPorts();
     }
 
+    /**
+     * Set current port's baudrate
+     * @param baudrate the desired baudrate
+     */
     void set_port_baudrate(int baudrate) {
         port.setBaudRate(baudrate);
-    }
-
-    int get_port_baudrate() {
-       return port.getBaudRate();
     }
 
     /**
@@ -76,6 +76,12 @@ public class SerialInterface implements SerialPortMessageListener{
         is_opened = false;
     }
 
+    /**
+     * Send command to port
+     * @param string Plain command
+     * @param delimiter Delimiter of the command
+     * @throws IOException
+     */
     static void send(String string, String delimiter) throws IOException {
         byte[] out = (string + delimiter).getBytes();
         port.getOutputStream().write(out);
